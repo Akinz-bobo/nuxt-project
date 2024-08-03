@@ -1,0 +1,44 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
+    "@nuxtjs/axios": "^5.13.6",
+    "@pinia/nuxt": "^0.5.2",
+    "@tanstack/vue-table": "^8.19.3",
+    "@vee-validate/zod": "^4.13.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-vue-next": "^0.344.0",
+    "nuxt": "^3.10.3",
+    "nuxt-highcharts": "^3.1.1",
+    "pinia": "^2.2.0",
+    "radix-vue": "^1.4.9",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul-vue": "^0.2.0",
+    "vee-validate": "^4.13.2",
+    "vue": "^3.4.19",
+    "vue-router": "^4.3.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@types/jsonwebtoken": "^9.0.6",
+    "nuxt-icon": "^0.6.9",
+    "nuxt-lucide-icons": "^1.0.4",
+    "shadcn-nuxt": "^0.9.0",
+    "typescript": "^5.3.3"
+  }
+}
