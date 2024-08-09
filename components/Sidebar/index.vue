@@ -7,10 +7,10 @@ import {
 const open = ref(true);
 const name = "Akinz-bobo";
 
-const userStore = useUserStore();
-const logout = () => {
-  userStore.logout();
-  navigateTo("/auth/login", { replace: true });
+const { logout } = useAuthStore();
+const logoutHandler = async () => {
+  logout();
+  await navigateTo("/auth/login", { replace: true });
 };
 </script>
 
@@ -60,7 +60,7 @@ const logout = () => {
           </div>
         </PopoverTrigger>
         <PopoverContent class="w-[150px]">
-          <Button class="w-full" @click="logout" variant="destructive"
+          <Button class="w-full" @click="logoutHandler" variant="destructive"
             >Log Out</Button
           >
         </PopoverContent>

@@ -1,14 +1,12 @@
 import { defineEventHandler, readBody, setCookie } from "h3";
-import { users } from "~/server/data/customers";
-
 import { generateToken } from "~/server/utils/jwt";
-import { sessions } from "~/server/data/sessions";
-import { nanoid } from "nanoid";
+import { users } from ".";
 import { AuthRequestBody } from "~/types";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<AuthRequestBody>(event);
   const { username, password } = body;
+  console.log({ username, password });
 
   if (!username || !password) {
     event.res.statusCode = 400;
@@ -16,7 +14,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const user = users.find(
-    (user) => user.username === username && user.password === password
+    (user) =>
+      user.username.toLocaleLowerCase() ===
+        username.trim().toLocaleLowerCase() &&
+      user.password.toLocaleLowerCase() === password.trim().toLocaleLowerCase()
   );
   if (!user) {
     event.res.statusCode = 401;
@@ -25,13 +26,5 @@ export default defineEventHandler(async (event) => {
 
   const token = generateToken(user.id);
 
-  // For JWT authentication
-  return { token };
-
-  // For session-based authentication (if applicable)
-  //   const sessionId = nanoid();
-  //   sessions[sessionId] = user.id.toString();
-  //   setCookie(event, "sessionId", sessionId, { httpOnly: true });
-
-  //   return { message: "Login successful" };
+  return { token, message: "Success" };
 });

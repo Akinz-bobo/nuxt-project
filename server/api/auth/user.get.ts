@@ -1,5 +1,5 @@
 import { defineEventHandler } from "h3";
-import { users } from "~/server/data/customers";
+import { users } from ".";
 
 export default defineEventHandler((event) => {
   const userId = event.context.userId;
@@ -14,5 +14,12 @@ export default defineEventHandler((event) => {
     return { message: "User not found" };
   }
 
-  return { user: { id: user.id, username: user.username, email: user.email } };
+  return {
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    },
+    message: "Success",
+  };
 });

@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody } from "h3";
-import { users } from "~/server/data/customers";
+import { users } from ".";
 import { SignupRequestBody } from "~/types";
 
 export default defineEventHandler(async (event) => {
