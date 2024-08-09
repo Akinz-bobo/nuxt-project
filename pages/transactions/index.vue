@@ -1,14 +1,10 @@
 <script setup lang="ts">
 const loading = ref(false);
-import { h, onMounted, ref } from "vue";
-import type { ColumnDef } from "@tanstack/vue-table";
+import { onMounted, ref } from "vue";
 
-interface ITransaction {
-  id: string;
-  amount: number;
-  status: string;
-  email: string;
-}
+import DataTable from "~/components/table/data-table.vue";
+import type { ITransaction } from "~/types";
+import { transactionColumnDef } from "~/components/table/columns";
 const data = ref<ITransaction[]>([]);
 
 function generateRandomData(numObjects: number) {
@@ -37,41 +33,6 @@ function generateRandomData(numObjects: number) {
 onMounted(async () => {
   generateRandomData(100);
 });
-
-const columns: ColumnDef<any, any>[] = [
-  {
-    id: "email",
-    header: () => h("div", { class: "text-left" }, "Email"),
-    cell: ({ row }) => {
-      const email = row.original.email;
-      return h("div", { class: "text-left font-medium" }, email);
-    },
-  },
-  {
-    id: "status",
-    header: () => h("div", { class: "text-left" }, "Status"),
-    cell: ({ row }) => {
-      const status = row.original.status;
-      return h("div", { class: "text-left font-medium" }, status);
-    },
-  },
-  {
-    id: "amount",
-    header: () => h("div", { class: "text-left" }, "Amount"),
-    cell: ({ row }) => {
-      const amount = row.original.amount;
-      return h("div", { class: "text-left font-medium" }, `$${amount}`);
-    },
-  },
-  {
-    id: "id",
-    header: () => h("div", { class: "text-left" }, "ID"),
-    cell: ({ row }) => {
-      const id = row.original.id;
-      return h("div", { class: "text-left font-medium" }, id);
-    },
-  },
-];
 </script>
 
 <template>
@@ -82,6 +43,6 @@ const columns: ColumnDef<any, any>[] = [
         <h1>Transactions</h1>
       </div>
     </header>
-    <DataTable :columns="columns" :data="data" />
+    <DataTable :columns="transactionColumnDef" :data="data" />
   </div>
 </template>

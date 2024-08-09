@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MoreHorizontal } from "lucide-vue-next";
+import { toast } from "vue-sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,13 +10,44 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import DeleteButton from "./delete-button.vue";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import type { User } from "~/types";
 
 const props = defineProps<{
   user: User;
 }>();
+
+defineEmits<{
+  (e: "expand"): void;
+}>();
+
+const { deleteCustomer, verifyCustomer } = useUserStore();
+const handleDeleteCustomer = () => {
+  deleteCustomer(props.user.id);
+  toast.error("Customer deleted successfully!", {
+    style: {
+      background: "red",
+      color: "white",
+    },
+  });
+};
+const handleVerifyCustomer = () => {
+  const verified = verifyCustomer(props.user.id);
+  if (verified) {
+    toast.error("Customer verified successfully!", {
+      style: {
+        background: "#6ee7b7",
+      },
+    });
+  }
+};
+const handleUpdateCustomer = (data: any) => {
+  // deleteCustomer(props.user.id);
+  toast.success("Customer updated successfully!", {
+    style: {
+      background: "#6ee7b7",
+    },
+  });
+};
 </script>
 
 <template>
@@ -29,21 +61,27 @@ const props = defineProps<{
     <DropdownMenuContent align="end">
       <DropdownMenuLabel class="text-center">Actions</DropdownMenuLabel>
       <DropdownMenuItem>
-        <Dialog>
-          <DialogTrigger as-child>
-            <Button variant="destructive" class="w-full">Delete</Button>
-          </DialogTrigger>
-          <DeleteButton :user="user" />
-        </Dialog>
+        <Button
+          variant="destructive"
+          class="w-full"
+          @click="handleDeleteCustomer"
+          >Delete</Button
+        >
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        <Button class="w-full bg-yellow-400 text-white hover:bg-yellow-400/75">
+      <DropdownMenuItem @click="$emit('expand')">
+        <Button
+          class="w-full bg-yellow-400 text-white hover:bg-yellow-400/75"
+          @click="handleUpdateCustomer"
+        >
           Update
         </Button>
       </DropdownMenuItem>
       <DropdownMenuItem>
-        <Button class="w-full bg-green-500 text-white hover:bg-green-500/75">
+        <Button
+          class="w-full bg-green-500 text-white hover:bg-green-500/75"
+          @click="handleVerifyCustomer"
+        >
           Vefified
         </Button>
       </DropdownMenuItem>

@@ -37,3 +37,10 @@ export interface Data {
   status: number;
   body: USer[];
 }
+
+export interface ITransaction {
+  id: string;
+  amount: number;
+  status: string;
+  email: string;
+}

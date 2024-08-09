@@ -2,7 +2,7 @@ import type { User } from "~/types";
 
 export const useUserStore = defineStore("user", () => {
   const customers = ref<User[]>([]);
-  const customer = ref<User | null>(null);
+
   const fetchCustomers = (count?: number) => {
     $fetch(`/api/customers?count=${count}`).then((response) => {
       customers.value = response.body;
@@ -15,15 +15,45 @@ export const useUserStore = defineStore("user", () => {
     customers.value = customers.value.filter((customer) => customer.id !== id);
   };
 
-  const setCustomer = (userData: User) => {
-    customer.value = userData;
+  const verifyCustomer = (id: string) => {
+    const customer = customers.value.find((customer) => customer.id === id);
+    if (!customer) {
+      throw new Error("Customer not found");
+    }
+    return customer;
   };
+
+  const updateCustomer = (
+    id: string,
+    formValues: {
+      fullname: string;
+      email: string;
+      age: number;
+    }
+  ) => {
+    const customerIndex = customers.value.findIndex(
+      (customer) => customer.id === id
+    );
+    if (customerIndex === -1) {
+      throw new Error("Customer not found");
+    }
+
+    customers.value[customerIndex] = {
+      ...customers.value[customerIndex],
+      name: formValues.fullname,
+      email: formValues.email,
+      age: formValues.age,
+    };
+
+    return customers.value;
+  };
+
   return {
     customers,
-    customer,
-    setCustomer,
     fetchCustomers,
     deleteCustomer,
+    verifyCustomer,
+    updateCustomer,
   };
 });
 

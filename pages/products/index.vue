@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { h, ref, onMounted } from "vue";
-import { format } from "date-fns";
+
 import type { ColumnDef } from "@tanstack/vue-table";
-import EditButton from "~/components/EditButton.vue";
+import DataTable from "~/components/table/data-table.vue";
 
 const data = ref<any[]>([]);
 
@@ -50,7 +50,6 @@ const columns: ColumnDef<any, any>[] = [
   {
     id: "action",
     header: () => h("div", { class: "text-left" }, "Actions"),
-    cell: ({ row }) => h(EditButton, { id: row.original.id }),
   },
 ];
 </script>

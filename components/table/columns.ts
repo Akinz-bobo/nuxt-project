@@ -1,14 +1,14 @@
 import { createColumnHelper } from "@tanstack/vue-table";
 import DropdownAction from "@/components/table/table-dropdown.vue";
-import { ArrowUpDown, ChevronDown } from "lucide-vue-next";
+import { ArrowUpDown, ChevronDown, Trash } from "lucide-vue-next";
 import { h } from "vue";
-import type { User } from "~/types";
+import type { ITransaction, User } from "~/types";
 import Button from "../ui/button/Button.vue";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const columnHelper = createColumnHelper<User>();
+const userColumnHelper = createColumnHelper<User>();
 export const customerColumnDef = [
-  columnHelper.display({
+  userColumnHelper.display({
     id: "select",
     header: ({ table }) =>
       h(Checkbox, {
@@ -27,11 +27,11 @@ export const customerColumnDef = [
     enableHiding: false,
   }),
 
-  columnHelper.accessor("id", {
+  userColumnHelper.accessor("id", {
     header: () => h("div", { class: "text-left" }, "ID"),
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("name", {
+  userColumnHelper.accessor("name", {
     header: ({ column }) => {
       return h(
         Button,
@@ -44,7 +44,7 @@ export const customerColumnDef = [
     },
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("age", {
+  userColumnHelper.accessor("age", {
     header: ({ column }) => {
       return h(
         Button,
@@ -57,7 +57,7 @@ export const customerColumnDef = [
     },
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("avatar", {
+  userColumnHelper.accessor("avatar", {
     header: () => h("div", { class: "text-left" }, "Image"),
     cell: ({ row }) => {
       const imageUrl = row.original.avatar;
@@ -68,7 +68,7 @@ export const customerColumnDef = [
       });
     },
   }),
-  columnHelper.accessor("gender", {
+  userColumnHelper.accessor("gender", {
     header: ({ column }) => {
       return h(
         Button,
@@ -81,7 +81,7 @@ export const customerColumnDef = [
     },
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("email", {
+  userColumnHelper.accessor("email", {
     header: ({ column }) => {
       return h(
         Button,
@@ -94,17 +94,77 @@ export const customerColumnDef = [
     },
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("phone", {
+  userColumnHelper.accessor("phone", {
     header: () => h("div", { class: "text-left" }, "Phone Number"),
     cell: (info) => info.getValue(),
   }),
-  columnHelper.display({
+  userColumnHelper.display({
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
 
-      return h("div", { class: "relative" }, h(DropdownAction, { user }));
+      return h(
+        "div",
+        { class: "relative" },
+        h(DropdownAction, { user, onExpand: row.toggleExpanded })
+      );
+    },
+  }),
+];
+
+const transactionColumnHelper = createColumnHelper<ITransaction>();
+export const transactionColumnDef = [
+  transactionColumnHelper.display({
+    id: "select",
+    header: ({ table }) =>
+      h(Checkbox, {
+        checked: table.getIsAllPageRowsSelected(),
+        "onUpdate:checked": (value: boolean) =>
+          table.toggleAllPageRowsSelected(!!value),
+        ariaLabel: "Select all",
+      }),
+    cell: ({ row }) =>
+      h(Checkbox, {
+        checked: row.getIsSelected(),
+        "onUpdate:checked": (value: boolean) => row.toggleSelected(!!value),
+        ariaLabel: "Select row",
+      }),
+    enableSorting: false,
+    enableHiding: false,
+  }),
+  transactionColumnHelper.accessor("email", {
+    header: () => h("div", { class: "text-left" }, "Email"),
+    cell: (info) => info.getValue(),
+  }),
+  transactionColumnHelper.accessor("status", {
+    header: () => h("div", { class: "text-left" }, "Status"),
+    cell: (info) => info.getValue(),
+  }),
+  transactionColumnHelper.accessor("amount", {
+    header: () => h("div", { class: "text-left" }, "Amount"),
+    cell: ({ row }) => {
+      const amount = row.original.amount;
+      return h("div", { class: "text-left font-medium" }, `$${amount}`);
+    },
+  }),
+  transactionColumnHelper.accessor("id", {
+    header: () => h("div", { class: "text-left" }, "ID"),
+    cell: (info) => info.getValue(),
+  }),
+  transactionColumnHelper.display({
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const user = row.original;
+
+      return h(
+        Button,
+        {
+          variant: "destructive",
+        },
+        () => ["Delete", h(Trash, { class: "ml-2 h-4 w-4" })]
+      );
     },
   }),
 ];

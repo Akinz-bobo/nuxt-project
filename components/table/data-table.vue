@@ -4,6 +4,7 @@ import type {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
+  ExpandedState,
 } from "@tanstack/vue-table";
 import {
   FlexRender,
@@ -12,6 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
+  getExpandedRowModel,
 } from "@tanstack/vue-table";
 
 import {
@@ -53,6 +55,9 @@ const columnVisibility = ref<VisibilityState>({});
 // Selection
 const rowSelection = ref({});
 
+// Expansion
+const expanded = ref<ExpandedState>({});
+
 const table = useVueTable({
   initialState: {
     pagination: {
@@ -70,6 +75,7 @@ const table = useVueTable({
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
+  getExpandedRowModel: getExpandedRowModel(),
 
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: (updaterOrValue) => {
@@ -89,6 +95,8 @@ const table = useVueTable({
   onRowSelectionChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, rowSelection),
 
+  onExpandedChange: (updaterOrValue) => valueUpdater(updaterOrValue, expanded),
+
   state: {
     get sorting() {
       return sorting.value;
@@ -104,6 +112,9 @@ const table = useVueTable({
     },
     get rowSelection() {
       return rowSelection.value;
+    },
+    get expanded() {
+      return expanded.value;
     },
   },
 });
@@ -174,19 +185,29 @@ function handlePageSizeChange(e: any) {
         </TableHeader>
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
-            <TableRow
-              v-for="row in table.getRowModel().rows"
-              :key="row.id"
-              :data-state="row.getIsSelected() ? 'selected' : undefined"
-            >
-              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                <FlexRender
-                  :render="cell.column.columnDef.cell"
-                  :props="cell.getContext()"
-                />
-              </TableCell>
-            </TableRow>
+            <template v-for="row in table.getRowModel().rows" :key="row.id">
+              <TableRow
+                :data-state="row.getIsSelected() ? 'selected' : undefined"
+              >
+                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                  <FlexRender
+                    :render="cell.column.columnDef.cell"
+                    :props="cell.getContext()"
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow v-if="row.getIsExpanded()">
+                <TableCell :colspan="row.getAllCells().length">
+                  <!-- {{ JSON.stringify(row.original) }} -->
+                  <TableExpandedForm
+                    :user="row.original"
+                    :onExpand="row.toggleExpanded"
+                  />
+                </TableCell>
+              </TableRow>
+            </template>
           </template>
+
           <template v-else>
             <TableRow>
               <TableCell :colspan="columns.length" class="h-24 text-center">
