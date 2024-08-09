@@ -1,10 +1,3 @@
-export interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-}
-
 export interface AuthRequestBody {
   username: string;
   password: string;
@@ -30,24 +23,17 @@ export type Category =
   | "Home & Kitchen"
   | "Toys & Games";
 
-export interface User {
-  id: number;
-  username: string;
+export type User = {
+  id: string;
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
   gender: string;
-  image: string;
-  token: string;
-}
-
-export interface Customer {
-  id: number;
-  firstName: string;
-  lastName: string;
+  avatar: string;
   age: number;
-  gender: string;
-  email: string;
   phone: string;
-  image: string;
+};
+
+export interface Data {
+  status: number;
+  body: USer[];
 }
