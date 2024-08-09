@@ -1,35 +1,32 @@
-import { products } from "~/data/products";
 import { defineEventHandler, getQuery } from "h3";
+import { faker } from "@faker-js/faker";
+import type { Category, Product } from "~/types";
+
+const categories: Category[] = [
+  "Electronics",
+  "Books",
+  "Clothing",
+  "Home & Kitchen",
+  "Toys & Games",
+];
 
 export default defineEventHandler((event) => {
-  const query = getQuery(event);
-  const page = parseInt(query.page as string) || 1;
-  const limit = parseInt(query.limit as string) || 10;
-  const category = query.category as string | undefined;
-
-  let filteredProducts = products;
-
-  // Filter by category if provided
-  if (category) {
-    filteredProducts = filteredProducts.filter(
-      (product) => product.category === category
-    );
-  }
-
-  const total = filteredProducts.length;
-  const start = (page - 1) * limit;
-  const end = start + limit;
-
-  if (start >= total) {
-    return { statusCode: 404, message: "Page not found" };
+  const q = getQuery(event);
+  const count = Number(q.count || 10);
+  let products: Product[] = [];
+  for (let i = 0; i < count; i++) {
+    products.push({
+      id: i + 1,
+      name: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      price: parseFloat(faker.commerce.price()),
+      image: faker.image.url(),
+      category: categories[i % categories.length],
+    });
   }
 
   return {
-    data: filteredProducts.slice(start, end),
-    meta: {
-      total,
-      page,
-      limit,
-    },
+    status: 200,
+    body: products,
   };
 });

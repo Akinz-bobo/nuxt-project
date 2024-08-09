@@ -220,11 +220,29 @@ export const productColumnDef = [
     },
   }),
   productColumnHelper.accessor("category", {
-    header: () => h("div", { class: "text-left" }, "Category"),
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+        },
+        () => ["Category", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+      );
+    },
     cell: (info) => info.getValue(),
   }),
   productColumnHelper.accessor("price", {
-    header: () => h("div", { class: "text-left" }, "Price"),
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+        },
+        () => ["Price", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+      );
+    },
     cell: ({ row }) => {
       const price = row.original.price;
       return h("div", { class: "text-left font-medium" }, `$${price}`);

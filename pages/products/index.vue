@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
 import { productColumnDef } from "~/components/table/columns";
 
 import DataTable from "~/components/table/data-table.vue";
 
-const data = ref<any[]>([]);
-
-onMounted(async () => {
-  const productData = useProductsStore();
-  data.value = await productData.fetchProducts();
-});
+const { products } = storeToRefs(useProductsStore());
 </script>
 
 <template>
@@ -20,6 +14,6 @@ onMounted(async () => {
         <h1>Products</h1>
       </div>
     </header>
-    <DataTable :columns="productColumnDef" :data="data" />
+    <DataTable :columns="productColumnDef" :data="products" />
   </div>
 </template>
