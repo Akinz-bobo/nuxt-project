@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-const JWT_SECRET = "your_secret_key";
+const JWT_SECRET = "MySuperSecureSecret";
 
 export const generateToken = (userId: number): string => {
   return jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: "1h" });

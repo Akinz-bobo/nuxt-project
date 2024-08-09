@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: false,
-  middleware: ["auth-already"],
+  // middleware: ["auth-already"],
 });
 
 import { useForm } from "vee-validate";
@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-const userStore = useUserStore();
 const SignupSchema = toTypedSchema(
   z.object({
     username: z.string().min(3, "Username is required"),
@@ -28,11 +27,10 @@ const form = useForm({
   validationSchema: SignupSchema,
 });
 
+const { login } = useAuthStore();
+
 const onSubmit = form.handleSubmit(async (values) => {
-  await userStore.signIn({
-    username: "emilys",
-    password: "emilyspass",
-  });
+  login(values);
   await navigateTo("/", { replace: true });
 });
 </script>
