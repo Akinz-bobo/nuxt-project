@@ -89,7 +89,7 @@ export const customerColumnDef = [
           variant: "ghost",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
-        () => ["Phone", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ["Email", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
       );
     },
     cell: (info) => info.getValue(),

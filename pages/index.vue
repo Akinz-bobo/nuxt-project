@@ -79,7 +79,6 @@ onMounted(() => {
         <p>Hi, welcome back !</p>
         <h1>Dashboard</h1>
       </div>
-      <ProductNew />
     </header>
     <main class="grid w-full gap-4">
       <Tabs default-value="Today" class="w-full" @click="setCategory">

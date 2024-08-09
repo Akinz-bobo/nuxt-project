@@ -1,5 +1,5 @@
 import { defineEventHandler } from "h3";
-import { users } from "~/server/data/users";
+import { users } from "~/server/data/customers";
 
 export default defineEventHandler((event) => {
   const userId = event.context.userId;

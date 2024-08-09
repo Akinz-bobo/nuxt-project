@@ -1,12 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { Data } from "~/types";
+import { customers } from "~/server/data/customers";
 
 export default defineEventHandler(async (event): Promise<Data> => {
   const q = getQuery(event);
-  let users = [];
+
   const count = Number(q.count || 10);
   for (let i = 0; i < count; i++) {
-    users.push({
+    customers.push({
       id: faker.string.uuid(),
       name: faker.person.fullName(),
       email: faker.internet.email(),
@@ -19,6 +20,6 @@ export default defineEventHandler(async (event): Promise<Data> => {
 
   return {
     status: 200,
-    body: users,
+    body: customers,
   };
 });

@@ -38,14 +38,37 @@ export const useUserStore = defineStore("user", () => {
       throw new Error("Customer not found");
     }
 
-    customers.value[customerIndex] = {
+    const updatedCustomer = {
       ...customers.value[customerIndex],
       name: formValues.fullname,
       email: formValues.email,
       age: formValues.age,
     };
+    customers.value = [
+      ...customers.value.slice(0, customerIndex),
+      updatedCustomer,
+      ...customers.value.slice(customerIndex + 1),
+    ];
 
-    return customers.value;
+    return customers.value[customerIndex];
+  };
+
+  const addCustomer = (data: {
+    fullname: string;
+    age: number;
+    gender: string;
+    email: string;
+    phone: string;
+  }) => {
+    $fetch(`/api/customers`, {
+      body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      customers.value = response;
+    });
   };
 
   return {
@@ -54,6 +77,7 @@ export const useUserStore = defineStore("user", () => {
     deleteCustomer,
     verifyCustomer,
     updateCustomer,
+    addCustomer,
   };
 });
 

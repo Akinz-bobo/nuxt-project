@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-
+import CustomerForm from "~/components/CustomerForm.vue";
 import DataTable from "~/components/table/data-table.vue";
 import { customerColumnDef } from "~/components/table/columns";
 
@@ -20,6 +20,7 @@ onMounted(() => {
         <p>All Customers Table</p>
         <h1>Customers</h1>
       </div>
+      <CustomerForm />
     </header>
     <DataTable :data="customers" :columns="customerColumnDef" />
   </div>

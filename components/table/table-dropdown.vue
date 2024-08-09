@@ -40,14 +40,6 @@ const handleVerifyCustomer = () => {
     });
   }
 };
-const handleUpdateCustomer = (data: any) => {
-  // deleteCustomer(props.user.id);
-  toast.success("Customer updated successfully!", {
-    style: {
-      background: "#6ee7b7",
-    },
-  });
-};
 </script>
 
 <template>
@@ -78,10 +70,7 @@ const handleUpdateCustomer = (data: any) => {
         </Button>
       </DropdownMenuItem>
       <DropdownMenuItem>
-        <Button
-          class="w-full bg-green-500 text-white hover:bg-green-500/75"
-          @click="handleVerifyCustomer"
-        >
+        <Button class="w-full bg-green-500 text-white hover:bg-green-500/75">
           Vefified
         </Button>
       </DropdownMenuItem>

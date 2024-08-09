@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody, setCookie } from "h3";
-import { users } from "~/server/data/users";
+import { users } from "~/server/data/customers";
 
 import { generateToken } from "~/server/utils/jwt";
 import { sessions } from "~/server/data/sessions";

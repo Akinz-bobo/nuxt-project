@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { watchEffect } from "vue";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
@@ -17,7 +16,7 @@ import { toast } from "vue-sonner";
 import type { User } from "~/types";
 
 const props = defineProps<{ user: User }>();
-defineEmits<{
+const emit = defineEmits<{
   (e: "expand"): void;
 }>();
 
@@ -44,9 +43,14 @@ const { handleSubmit, setValues, values } = useForm({
 const { updateCustomer } = useUserStore();
 
 const onSubmit = handleSubmit((formValues) => {
-  updateCustomer(user.id, formValues);
-
-  toast.success("User information updated successfully!");
+  const updatedCustomer = updateCustomer(user.id, formValues);
+  console.log(updatedCustomer);
+  toast.success("Customer updated successfully!", {
+    style: {
+      background: "#6ee7b7",
+    },
+  });
+  emit("expand");
 });
 </script>
 
@@ -83,6 +87,6 @@ const onSubmit = handleSubmit((formValues) => {
         <FormMessage />
       </FormItem>
     </FormField>
-    <Button type="submit" @click="$emit('expand')">Update</Button>
+    <Button type="submit">Update</Button>
   </form>
 </template>
